@@ -1,5 +1,6 @@
 package pl.coderslab;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +16,6 @@ public class BookController {
         this.bookService = bookService;
     }
 
-    @ResponseBody
     @GetMapping
     public List<Book> getAllBooks() {
         return bookService.findAllBooks();
@@ -26,29 +26,34 @@ public class BookController {
     public Book helloBook() {
         return new Book(1L, "9788324631766", "Thinking in Java",
                 "Bruce Eckel", "Helion", "programming");
+
     }
 
-    @ResponseBody
+
     @PostMapping
-    public void addBook(Book book) {
+    public void addBook(@RequestBody Book book) {
         bookService.addBook(book);
     }
 
-    @ResponseBody
+
     @GetMapping("/{id}")
-    public Book bookById(@RequestParam Long id) {
-        return bookService.findBookById(id);
+    public Book bookById(@PathVariable Long id) {
+        Book book = bookService.findBookById(id);
+        if (book == null) {
+            ResponseEntity.notFound();
+        }
+        return book;
     }
 
     @PutMapping()
-    @ResponseBody
+
     public void updateBook(@RequestBody Book book) {
         bookService.editBook(book);
     }
 
-    @ResponseBody
+
     @DeleteMapping("/{id}")
-    public void deleteBook(@RequestParam Long id) {
+    public void deleteBook(@PathVariable Long id) {
         bookService.deleteById(id);
     }
 }

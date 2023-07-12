@@ -13,6 +13,7 @@ import java.util.List;
 public class MockBookService {
 
     private List<Book> booksList;
+    protected static Long nextId = 4L;
 
     public MockBookService() {
 
@@ -31,6 +32,7 @@ public class MockBookService {
     }
 
     public List<Book> findAllBooks() {
+
         return booksList;
     }
 
@@ -60,6 +62,7 @@ public class MockBookService {
     }
 
     public void addBook(Book book) {
+        book.setId(nextId++);
         booksList.add(book);
     }
 }
